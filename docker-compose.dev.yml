@@ -1,0 +1,11 @@
+
+services:
+  app:
+    container_name: rick-and-morty
+    image: rick-and-morty
+    build:
+      target: development_build
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
