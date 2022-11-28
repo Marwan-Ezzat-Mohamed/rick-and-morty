@@ -1,0 +1,7 @@
+
+services:
+  app:
+    container_name: rick-and-morty
+    image: rick-and-morty
+    build:
+      target: production
