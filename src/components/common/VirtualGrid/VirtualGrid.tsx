@@ -104,7 +104,7 @@ const VirtualGrid = <Item,>({
                     display: 'flex',
                     justifyContent: 'center',
                     position: 'absolute',
-                    marginTop: gap + 'px',
+                    paddingTop: gap + 'px',
                   }}
                   className="virtual-grid"
                   onItemsRendered={({
