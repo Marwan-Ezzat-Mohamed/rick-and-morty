@@ -16,7 +16,7 @@ interface ICharactersGrid {
   hasMore: boolean;
 }
 
-const CharacterGrid = ({
+const CharactersGrid = ({
   isItemLoaded,
   loadMoreItems,
   gridItems,
@@ -27,7 +27,7 @@ const CharacterGrid = ({
       <VirtualGrid
         items={gridItems}
         ItemCard={CharacterCard}
-        itemHeight={470}
+        itemHeight={495}
         itemWidth={255}
         gap={25}
         loadMoreItems={loadMoreItems}
@@ -38,4 +38,4 @@ const CharacterGrid = ({
   );
 };
 
-export default CharacterGrid;
+export default CharactersGrid;

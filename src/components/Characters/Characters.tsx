@@ -4,8 +4,8 @@ import { GET_CHARACTERS_FILTERED_BY_NAME } from '../../GraphQL/queries';
 import { GetCharactersResponse } from '../../GraphQL/types';
 import { useStore } from '../../store';
 import shallow from 'zustand/shallow';
-import useDebounce from './../common/useDebounce';
-import CharacterGrid from './CharacterGrid';
+import useDebounce from '../common/useDebounce/useDebounce';
+import CharactersGrid from './CharacterGrid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
@@ -22,13 +22,15 @@ const Characters = () => {
     shallow,
   );
 
-  const [getCharacters, { error, loading }] =
-    useLazyQuery<GetCharactersResponse>(GET_CHARACTERS_FILTERED_BY_NAME, {
+  const [getCharacters, { error }] = useLazyQuery<GetCharactersResponse>(
+    GET_CHARACTERS_FILTERED_BY_NAME,
+    {
       variables: {
         page: 1,
         name: searchQuery,
       },
-    });
+    },
+  );
 
   const loadCharacters = useCallback(
     async (query: string, override = false) => {
@@ -84,13 +86,13 @@ const Characters = () => {
           color="warning"
           sx={{ mx: 2 }}
         >
-          reload
+          Reload
         </Button>
       </Typography>
     );
 
   return (
-    <CharacterGrid
+    <CharactersGrid
       isItemLoaded={isItemLoaded}
       loadMoreItems={loadMoreItems}
       gridItems={

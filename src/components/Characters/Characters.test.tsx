@@ -14,7 +14,7 @@ jest.mock('@apollo/client');
 
 jest.mock('../../store');
 
-describe('CharactersListController', () => {
+describe('Characters', () => {
   it('renders error message when error is true', () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
@@ -147,7 +147,7 @@ describe('CharactersListController', () => {
     );
   });
 
-  it('send proper data to CharactersGrid when data is loading', async () => {
+  it('sends null to CharactersGrid when data is loading', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
       characters: null,
@@ -155,8 +155,8 @@ describe('CharactersListController', () => {
       searchQuery: '',
     });
     (useLazyQuery as jest.Mock).mockReturnValue([
-      jest.fn(() => ({ error: false, loading: false, data: mockCharacters })),
-      { error: false, loading: false, data: mockCharacters },
+      jest.fn(() => ({ error: false, loading: false, data: null })),
+      { error: false, loading: false, data: null },
     ]);
     render(<Characters />);
 
@@ -165,7 +165,7 @@ describe('CharactersListController', () => {
     ).toStrictEqual(null);
   });
 
-  it('send proper data to CharactersGrid when data is loaded', async () => {
+  it('sends proper data to CharactersGrid when data is loaded', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
       characters: mockCharacters.characters.results,

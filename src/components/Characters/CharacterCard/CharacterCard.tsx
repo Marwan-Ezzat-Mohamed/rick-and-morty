@@ -67,7 +67,7 @@ const CharacterCard = ({ character }: CharacterCardProps) => {
               {title}
             </Typography>
           </Box>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" sx={styles.infoText}>
             {value}
           </Typography>
         </Box>

@@ -3,7 +3,7 @@ import { SxProps } from '@mui/material';
 const CharacterStyles: Record<string, SxProps> = {
   card: {
     width: '255px',
-    height: '470px',
+    height: '495px',
     p: 2,
     borderRadius: '20px',
     boxShadow: 6,
@@ -34,6 +34,20 @@ const CharacterStyles: Record<string, SxProps> = {
     display: 'flex',
     alignItems: 'center',
     p: 0,
+  },
+
+  infoText: {
+    lineHeight: '1.3',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '-webkit-line-clamp': '2',
+    '-webkit-box-orient': 'vertical',
+    display: '-webkit-box',
+    //hover
+    '&:hover': {
+      overflowY: 'auto',
+      textOverflow: 'unset',
+    },
   },
 };
 
