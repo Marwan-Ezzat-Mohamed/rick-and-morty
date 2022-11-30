@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -33,46 +33,48 @@ const CharacterCard = ({ character }: CharacterCardProps) => {
     }),
     [colors],
   );
+  if (!character) return <CharacterCardSkeleton />;
 
-  const Information = ({
-    title,
-    value,
-    icon,
-    rotate = '0deg',
-  }: {
-    title: string;
-    value: string;
-    icon: IconDefinition;
-    rotate?: string;
-  }) => {
-    return (
-      <Box>
-        <Box
-          sx={{
-            display: 'flex',
-            color: '#8f949f',
-            alignItems: 'center',
-          }}
-        >
-          <FontAwesomeIcon
-            icon={icon}
-            style={{
-              rotate: rotate,
-              fontWeight: 'bold',
+  const Information = React.memo(
+    ({
+      title,
+      value,
+      icon,
+      rotate = '0deg',
+    }: {
+      title: string;
+      value: string;
+      icon: IconDefinition;
+      rotate?: string;
+    }) => {
+      return (
+        <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              color: '#8f949f',
+              alignItems: 'center',
             }}
-          />
-          <Typography variant="h5" component="div" ml={1} fontWeight="bold">
-            {title}
+          >
+            <FontAwesomeIcon
+              icon={icon}
+              style={{
+                rotate: rotate,
+                fontWeight: 'bold',
+              }}
+            />
+            <Typography variant="h5" component="div" ml={1} fontWeight="bold">
+              {title}
+            </Typography>
+          </Box>
+          <Typography variant="h5" component="div">
+            {value}
           </Typography>
         </Box>
-        <Typography variant="h5" component="div">
-          {value}
-        </Typography>
-      </Box>
-    );
-  };
+      );
+    },
+  );
 
-  if (!character) return <CharacterCardSkeleton />;
   const { image, name, status, species, gender, location, episode } = character;
 
   return (
@@ -104,25 +106,27 @@ const CharacterCard = ({ character }: CharacterCardProps) => {
             }}
           />
           <Typography variant="h5" component="div" ml={1}>
-            status
+            {`${status}`}
           </Typography>
         </Box>
-        {Information({
-          title: 'Species',
-          value: `${species} - ${gender}`,
-          icon: faDna,
-          rotate: '45deg',
-        })}
-        {Information({
-          title: 'Last known location',
-          value: location.name,
-          icon: faLocationArrow,
-        })}
-        {Information({
-          title: 'First seen in',
-          value: episode[0].name,
-          icon: faEye,
-        })}
+
+        <Information
+          title="Species"
+          value={`${species} - ${gender}`}
+          rotate="45deg"
+          icon={faDna}
+        />
+        <Information
+          title="Last known location"
+          value={location.name}
+          rotate="45deg"
+          icon={faLocationArrow}
+        />
+        <Information
+          title="First seen in"
+          value={episode[0].name}
+          icon={faEye}
+        />
       </CardContent>
     </Card>
   );
