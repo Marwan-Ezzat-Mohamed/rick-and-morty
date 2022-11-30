@@ -20,20 +20,19 @@ const Characters = () => {
     shallow,
   );
 
-  const [getCharacters, { loading }] = useLazyQuery<GetCharactersResponse>(
-    GET_CHARACTERS_FILTERED_BY_NAME,
-    {
+  const [getCharacters, { error, loading }] =
+    useLazyQuery<GetCharactersResponse>(GET_CHARACTERS_FILTERED_BY_NAME, {
       variables: {
         page: 1,
         name: searchQuery,
       },
-    },
-  );
+    });
 
   const loadCharacters = useCallback(
     async (query: string, override = false) => {
       if (!nextPage.current || currentLoading.current === nextPage.current)
         return; // no more pages to load
+
       currentLoading.current = nextPage.current;
       const { data, error } = await getCharacters({
         variables: {
@@ -58,24 +57,43 @@ const Characters = () => {
 
   const isItemLoaded = useCallback(
     (index: number) => {
-      return !characters[index];
+      return !(characters && characters[index]);
     },
     [characters],
   );
 
   const loadMoreItems = useCallback(
     async (startIndex: number, stopIndex: number) => {
+      console.log({ startIndex, stopIndex });
+      if (!characters) return;
       if (stopIndex >= characters.length || !nextPage.current) return;
       await loadCharacters(searchQueryDebounce);
     },
     [characters, loadCharacters, searchQueryDebounce],
   );
 
+  if (error)
+    return (
+      <h1
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        Error loading characters
+        <button onClick={() => loadCharacters(searchQueryDebounce)}>
+          reload
+        </button>
+      </h1>
+    );
+
   return (
     <CharacterGrid
       isItemLoaded={isItemLoaded}
       loadMoreItems={loadMoreItems}
-      data={loading ? null : characters.map(character => ({ character }))}
+      gridItems={
+        characters ? characters.map(character => ({ character })) : null
+      }
+      isLoading={loading}
     />
   );
 };

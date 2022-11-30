@@ -1,14 +1,12 @@
-import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-
-import { Skeleton } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import styles from './styles';
-import { tokens } from './../../../theme';
-
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from './../../../theme';
+import styles from './styles';
+import { memo } from 'react';
 
 const CharacterCardSkeleton = () => {
   const theme = useTheme();
@@ -60,4 +58,4 @@ const CharacterCardSkeleton = () => {
   );
 };
 
-export default CharacterCardSkeleton;
+export default memo(CharacterCardSkeleton);
