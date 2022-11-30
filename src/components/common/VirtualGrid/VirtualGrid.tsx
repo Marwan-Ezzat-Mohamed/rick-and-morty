@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import InfiniteLoader from 'react-window-infinite-loader';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -7,6 +7,7 @@ import {
   GridChildComponentProps,
   areEqual,
 } from 'react-window';
+import Typography from '@mui/material/Typography';
 import './styles.css';
 
 type ItemCardGridProps<Item> = {
@@ -20,6 +21,8 @@ type ItemCardGridProps<Item> = {
     stopIndex: number,
   ) => Promise<void> | void;
   isItemLoaded: (index: number) => boolean;
+  isLoading: boolean;
+  numberOfSkeletonsRows?: number;
 };
 
 const VirtualGrid = <Item,>({
@@ -27,31 +30,34 @@ const VirtualGrid = <Item,>({
   ItemCard,
   itemHeight,
   itemWidth,
-  gap = 0,
   loadMoreItems,
   isItemLoaded,
+  isLoading,
+  gap = 0,
+  numberOfSkeletonsRows = 1,
 }: ItemCardGridProps<Item>): JSX.Element => {
-  const numberOfItemsThatFits = useRef(0);
-  const getIdByGridPosition = (col: number, row: number) =>
-    row * numberOfItemsThatFits.current + col;
+  const numberOfColumns = useRef(0);
+  const getIdByGridPosition = useCallback(
+    (col: number, row: number) => row * numberOfColumns.current + col,
+    [],
+  );
 
   if (!items) return <LinearProgress color="inherit" />;
-  if (items.length === 0)
+
+  if (items.length === 0) {
     return (
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <Typography align="center" variant="h1">
         No results found
-      </h1>
+      </Typography>
     );
+  }
+
   const Cell = React.memo(
     ({
       columnIndex,
       rowIndex,
       style,
-    }: GridChildComponentProps): JSX.Element => {
+    }: GridChildComponentProps): JSX.Element | null => {
       const index = getIdByGridPosition(columnIndex, rowIndex);
       return (
         <div style={style}>
@@ -65,29 +71,32 @@ const VirtualGrid = <Item,>({
   return (
     <AutoSizer>
       {({ height, width }) => {
-        numberOfItemsThatFits.current = Math.max(
+        const totalNumberOfCards = items?.length ?? 0;
+        numberOfColumns.current = Math.max(
           Math.floor(width / (itemWidth + gap)),
           1,
         );
+        const numberOfRows = Math.ceil(
+          totalNumberOfCards / numberOfColumns.current,
+        );
+
         return (
           <InfiniteLoader
             isItemLoaded={isItemLoaded}
-            itemCount={(items?.length ?? 0) + 10}
+            itemCount={totalNumberOfCards}
             loadMoreItems={loadMoreItems}
-            threshold={5}
+            threshold={1}
           >
             {({ onItemsRendered, ref }) => {
               return (
                 <Grid
                   columnCount={Math.min(
-                    numberOfItemsThatFits.current,
-                    (items?.length ?? 0) + 10,
+                    numberOfColumns.current,
+                    totalNumberOfCards,
                   )}
                   columnWidth={itemWidth + gap}
                   height={height}
-                  rowCount={
-                    ((items?.length ?? 0) + 10) / numberOfItemsThatFits.current
-                  }
+                  rowCount={numberOfRows + numberOfSkeletonsRows}
                   rowHeight={itemHeight + gap}
                   ref={ref}
                   width={width}
@@ -102,16 +111,15 @@ const VirtualGrid = <Item,>({
                     onItemsRendered({
                       overscanStartIndex:
                         gridProps.overscanRowStartIndex *
-                        numberOfItemsThatFits.current,
+                        numberOfColumns.current,
                       overscanStopIndex:
                         gridProps.overscanRowStopIndex *
-                        numberOfItemsThatFits.current,
+                        numberOfColumns.current,
                       visibleStartIndex:
                         gridProps.visibleRowStartIndex *
-                        numberOfItemsThatFits.current,
+                        numberOfColumns.current,
                       visibleStopIndex:
-                        gridProps.visibleRowStopIndex *
-                        numberOfItemsThatFits.current,
+                        gridProps.visibleRowStopIndex * numberOfColumns.current,
                     });
                   }}
                 >
