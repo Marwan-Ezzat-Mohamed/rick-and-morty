@@ -13,14 +13,14 @@ interface ICharactersGrid {
     startIndex: number,
     stopIndex: number,
   ) => Promise<void> | void;
-  isLoading: boolean;
+  hasMore: boolean;
 }
 
 const CharacterGrid = ({
   isItemLoaded,
   loadMoreItems,
   gridItems,
-  isLoading,
+  hasMore,
 }: ICharactersGrid) => {
   return (
     <Box sx={styles.container}>
@@ -29,10 +29,10 @@ const CharacterGrid = ({
         ItemCard={CharacterCard}
         itemHeight={470}
         itemWidth={255}
-        gap={20}
+        gap={25}
         loadMoreItems={loadMoreItems}
         isItemLoaded={isItemLoaded}
-        isLoading={isLoading}
+        hasMore={hasMore}
       />
     </Box>
   );

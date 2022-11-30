@@ -21,7 +21,7 @@ type ItemCardGridProps<Item> = {
     stopIndex: number,
   ) => Promise<void> | void;
   isItemLoaded: (index: number) => boolean;
-  isLoading: boolean;
+  hasMore: boolean;
   numberOfSkeletonsRows?: number;
 };
 
@@ -32,7 +32,7 @@ const VirtualGrid = <Item,>({
   itemWidth,
   loadMoreItems,
   isItemLoaded,
-  isLoading,
+  hasMore,
   gap = 0,
   numberOfSkeletonsRows = 1,
 }: ItemCardGridProps<Item>): JSX.Element => {
@@ -59,6 +59,7 @@ const VirtualGrid = <Item,>({
       style,
     }: GridChildComponentProps): JSX.Element | null => {
       const index = getIdByGridPosition(columnIndex, rowIndex);
+      if (!hasMore && index >= items.length) return null;
       return (
         <div style={style}>
           <ItemCard {...items[index]} style={{}} />
@@ -71,21 +72,20 @@ const VirtualGrid = <Item,>({
   return (
     <AutoSizer>
       {({ height, width }) => {
-        const totalNumberOfCards = items?.length ?? 0;
+        const totalNumberOfCards = (items?.length ?? 0) + (hasMore ? 1 : 0);
         numberOfColumns.current = Math.max(
           Math.floor(width / (itemWidth + gap)),
           1,
         );
-        const numberOfRows = Math.ceil(
-          totalNumberOfCards / numberOfColumns.current,
-        );
+        const numberOfRows =
+          Math.ceil(totalNumberOfCards / numberOfColumns.current) +
+          (hasMore ? numberOfSkeletonsRows : 0);
 
         return (
           <InfiniteLoader
             isItemLoaded={isItemLoaded}
             itemCount={totalNumberOfCards}
             loadMoreItems={loadMoreItems}
-            threshold={1}
           >
             {({ onItemsRendered, ref }) => {
               return (
@@ -96,7 +96,7 @@ const VirtualGrid = <Item,>({
                   )}
                   columnWidth={itemWidth + gap}
                   height={height}
-                  rowCount={numberOfRows + numberOfSkeletonsRows}
+                  rowCount={numberOfRows}
                   rowHeight={itemHeight + gap}
                   ref={ref}
                   width={width}
@@ -104,22 +104,25 @@ const VirtualGrid = <Item,>({
                     display: 'flex',
                     justifyContent: 'center',
                     position: 'absolute',
-                    paddingTop: gap + 'px',
+                    marginTop: gap + 'px',
                   }}
                   className="virtual-grid"
-                  onItemsRendered={gridProps => {
+                  onItemsRendered={({
+                    visibleRowStartIndex,
+                    visibleColumnStartIndex,
+                    visibleRowStopIndex,
+                    overscanRowStopIndex,
+                    overscanRowStartIndex,
+                  }) => {
                     onItemsRendered({
                       overscanStartIndex:
-                        gridProps.overscanRowStartIndex *
-                        numberOfColumns.current,
+                        overscanRowStartIndex * numberOfColumns.current,
                       overscanStopIndex:
-                        gridProps.overscanRowStopIndex *
-                        numberOfColumns.current,
+                        overscanRowStopIndex * numberOfColumns.current,
                       visibleStartIndex:
-                        gridProps.visibleRowStartIndex *
-                        numberOfColumns.current,
+                        visibleRowStartIndex * numberOfColumns.current,
                       visibleStopIndex:
-                        gridProps.visibleRowStopIndex * numberOfColumns.current,
+                        visibleRowStopIndex * numberOfColumns.current,
                     });
                   }}
                 >

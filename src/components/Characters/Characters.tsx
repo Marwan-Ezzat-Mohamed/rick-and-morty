@@ -6,6 +6,8 @@ import { useStore } from '../../store';
 import shallow from 'zustand/shallow';
 import useDebounce from './../common/useDebounce';
 import CharacterGrid from './CharacterGrid';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const Characters = () => {
   const nextPage = useRef(1);
@@ -57,16 +59,16 @@ const Characters = () => {
 
   const isItemLoaded = useCallback(
     (index: number) => {
-      return !(characters && characters[index]);
+      return !(characters && characters[index] && characters[index].id);
     },
     [characters],
   );
 
   const loadMoreItems = useCallback(
     async (startIndex: number, stopIndex: number) => {
-      console.log({ startIndex, stopIndex });
+      console.log({ startIndex, stopIndex, len: characters?.length });
       if (!characters) return;
-      if (stopIndex >= characters.length || !nextPage.current) return;
+      if (stopIndex < characters.length - 1 || !nextPage.current) return;
       await loadCharacters(searchQueryDebounce);
     },
     [characters, loadCharacters, searchQueryDebounce],
@@ -74,16 +76,17 @@ const Characters = () => {
 
   if (error)
     return (
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <Typography variant="h1" align="center">
         Error loading characters
-        <button onClick={() => loadCharacters(searchQueryDebounce)}>
+        <Button
+          variant="contained"
+          onClick={() => loadCharacters(searchQueryDebounce)}
+          color="warning"
+          sx={{ mx: 2 }}
+        >
           reload
-        </button>
-      </h1>
+        </Button>
+      </Typography>
     );
 
   return (
@@ -93,7 +96,7 @@ const Characters = () => {
       gridItems={
         characters ? characters.map(character => ({ character })) : null
       }
-      isLoading={loading}
+      hasMore={nextPage.current != null}
     />
   );
 };
