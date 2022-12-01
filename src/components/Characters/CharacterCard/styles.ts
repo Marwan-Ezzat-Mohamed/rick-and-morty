@@ -40,8 +40,8 @@ const CharacterStyles: Record<string, SxProps> = {
     lineHeight: '1.3',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    '-webkit-line-clamp': '2',
-    '-webkit-box-orient': 'vertical',
+    WebkitLineClamp: '2',
+    WebkitBoxOrient: 'vertical',
     display: '-webkit-box',
     //hover
     '&:hover': {
