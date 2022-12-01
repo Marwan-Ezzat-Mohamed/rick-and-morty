@@ -7,7 +7,16 @@ Object {
     <div>
       <div
         style="overflow: visible; height: 0px; width: 0px;"
-      />
+      >
+        <div
+          aria-label="grid"
+          aria-readonly="true"
+          class="ReactVirtualized__Grid ReactVirtualized__List undefined virtual-grid"
+          role="grid"
+          style="box-sizing: border-box; direction: ltr; height: 0px; position: relative; width: 0px; will-change: transform; overflow-x: hidden; overflow-y: auto;"
+          tabindex="0"
+        />
+      </div>
       <div
         class="resize-triggers"
       >
@@ -27,7 +36,16 @@ Object {
   "container": <div>
     <div
       style="overflow: visible; height: 0px; width: 0px;"
-    />
+    >
+      <div
+        aria-label="grid"
+        aria-readonly="true"
+        class="ReactVirtualized__Grid ReactVirtualized__List undefined virtual-grid"
+        role="grid"
+        style="box-sizing: border-box; direction: ltr; height: 0px; position: relative; width: 0px; will-change: transform; overflow-x: hidden; overflow-y: auto;"
+        tabindex="0"
+      />
+    </div>
     <div
       class="resize-triggers"
     >
@@ -102,17 +120,13 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <h1
-        class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter css-sqoje6-MuiTypography-root"
-      >
+      <h1>
         No results found
       </h1>
     </div>
   </body>,
   "container": <div>
-    <h1
-      class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter css-sqoje6-MuiTypography-root"
-    >
+    <h1>
       No results found
     </h1>
   </div>,
@@ -175,31 +189,15 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <span
-        class="MuiLinearProgress-root MuiLinearProgress-colorInherit MuiLinearProgress-indeterminate css-futumu-MuiLinearProgress-root"
-        role="progressbar"
-      >
-        <span
-          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar1Indeterminate css-jlm0hp-MuiLinearProgress-bar1"
-        />
-        <span
-          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar2Indeterminate css-1wsh2fw-MuiLinearProgress-bar2"
-        />
-      </span>
+      <h1>
+        Loading...
+      </h1>
     </div>
   </body>,
   "container": <div>
-    <span
-      class="MuiLinearProgress-root MuiLinearProgress-colorInherit MuiLinearProgress-indeterminate css-futumu-MuiLinearProgress-root"
-      role="progressbar"
-    >
-      <span
-        class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar1Indeterminate css-jlm0hp-MuiLinearProgress-bar1"
-      />
-      <span
-        class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar2Indeterminate css-1wsh2fw-MuiLinearProgress-bar2"
-      />
-    </span>
+    <h1>
+      Loading...
+    </h1>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],

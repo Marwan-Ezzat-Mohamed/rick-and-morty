@@ -63,7 +63,6 @@ describe('VirtualGrid', () => {
         hasMore={false}
       />,
     );
-
     expect(rendered).toMatchSnapshot();
   });
 });
