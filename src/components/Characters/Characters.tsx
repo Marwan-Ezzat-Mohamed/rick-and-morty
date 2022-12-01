@@ -4,7 +4,6 @@ import { GET_CHARACTERS_FILTERED_BY_NAME } from '../../GraphQL/queries';
 import { GetCharactersResponse } from '../../GraphQL/types';
 import { useStore } from '../../store';
 import shallow from 'zustand/shallow';
-import useDebounce from '../common/useDebounce/useDebounce';
 import CharactersGrid from './CharacterGrid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -63,11 +62,11 @@ const Characters = () => {
     [getCharacters, setCharacters, setHasNextPage],
   );
 
-  const searchQueryDebounce = useDebounce(searchQuery, 100);
+  //const searchQueryDebounce = useDebounce(searchQuery, 100);
   useEffect(() => {
     nextPage.current = 1; // reset page as we are searching for a new character
-    loadCharacters(searchQueryDebounce, true);
-  }, [searchQueryDebounce, loadCharacters]);
+    loadCharacters(searchQuery, true);
+  }, [searchQuery, loadCharacters]);
 
   const loadMoreItems = useCallback(async () => {
     await loadCharacters(searchQuery);

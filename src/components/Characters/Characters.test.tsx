@@ -18,6 +18,7 @@ describe('Characters', () => {
   it('renders error message when error is true', () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -33,6 +34,7 @@ describe('Characters', () => {
   it('renders reload button when error is true', () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -48,6 +50,7 @@ describe('Characters', () => {
   it('button calls refetch data when clicked', () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -70,6 +73,7 @@ describe('Characters', () => {
   it('updates the store with characters when data is returned', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -91,6 +95,7 @@ describe('Characters', () => {
   it('sends proper query to the server when searchQuery is empty', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -120,6 +125,7 @@ describe('Characters', () => {
   it('sends proper query to the server when searchQuery is not empty', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: 'rick',
@@ -150,6 +156,7 @@ describe('Characters', () => {
   it('sends null to CharactersGrid when data is loading', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: null,
       setCharacters,
       searchQuery: '',
@@ -168,6 +175,7 @@ describe('Characters', () => {
   it('sends proper data to CharactersGrid when data is loaded', async () => {
     const setCharacters = jest.fn();
     jest.mocked(useStore).mockReturnValue({
+      setHasNextPage: jest.fn(),
       characters: mockCharacters.characters.results,
       setCharacters,
       searchQuery: '',
