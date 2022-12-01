@@ -11,13 +11,7 @@ const gridProps = {
   itemHeight: 100,
   itemWidth: 100,
   gap: 1,
-  loadMoreItems: ({
-    startIndex,
-    stopIndex,
-  }: {
-    startIndex: number;
-    stopIndex: number;
-  }) => {
+  loadMoreItems: () => {
     return new Promise<void>(resolve => {
       setTimeout(() => {
         resolve();

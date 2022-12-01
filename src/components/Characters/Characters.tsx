@@ -69,18 +69,9 @@ const Characters = () => {
     loadCharacters(true);
   }, [searchQueryDebounce, loadCharacters]);
 
-  const loadMoreItems = useCallback(
-    async ({
-      startIndex,
-      stopIndex,
-    }: {
-      startIndex: number;
-      stopIndex: number;
-    }) => {
-      await loadCharacters();
-    },
-    [loadCharacters],
-  );
+  const loadMoreItems = useCallback(async () => {
+    await loadCharacters();
+  }, [loadCharacters]);
 
   if (error)
     return (

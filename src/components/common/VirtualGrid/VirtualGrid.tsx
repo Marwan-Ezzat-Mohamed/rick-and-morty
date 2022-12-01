@@ -39,13 +39,11 @@ const VirtualGrid = <ItemType,>({
   gap = 0,
   className,
   style,
-
   loadMoreItems,
   hasMore,
   numberOfSkeletonsCard = 1,
   LoadingComponent = null,
   NoResultsComponent = null,
-  ...rest
 }: VirtualGridProps<ItemType>) => {
   const itemsPerRow = useRef(0);
   const totalNumberOfItems =
@@ -55,9 +53,26 @@ const VirtualGrid = <ItemType,>({
     ({ index }: { index: number }) => {
       return !!(items && items[index]);
     },
-    [hasMore, items],
+    [items],
   );
 
+  if (!items) {
+    if (LoadingComponent) return LoadingComponent;
+    return <h1>Loading...</h1>;
+  }
+
+  if (items.length === 0) {
+    if (NoResultsComponent) return NoResultsComponent;
+    return (
+      <h1
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        No results found
+      </h1>
+    );
+  }
   const rowRenderer = ({ index, key, style }: any) => {
     const itemsToRenderPerRow = [];
     const fromIndex = index * itemsPerRow.current;
@@ -76,9 +91,9 @@ const VirtualGrid = <ItemType,>({
           key={key + i}
         >
           {renderItem ? (
-            renderItem(items![i])
+            renderItem(items[i])
           ) : (
-            <ItemCard {...items![i]} style={{}} />
+            <ItemCard {...items[i]} style={{}} />
           )}
         </div>,
       );
@@ -98,24 +113,6 @@ const VirtualGrid = <ItemType,>({
       </div>
     );
   };
-
-  if (!items) {
-    if (LoadingComponent) return LoadingComponent;
-    return <h1>Loading...</h1>;
-  }
-
-  if (items.length === 0) {
-    if (NoResultsComponent) return NoResultsComponent;
-    return (
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        No results found
-      </h1>
-    );
-  }
 
   return (
     <AutoSizer>

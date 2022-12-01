@@ -36,45 +36,43 @@ const CharacterCard = ({ character }: ICharacterCardProps) => {
   );
   if (!character) return <CharacterCardSkeleton />;
 
-  const Information = React.memo(
-    ({
-      title,
-      value,
-      icon,
-      rotate = '0deg',
-    }: {
-      title: string;
-      value: string;
-      icon: IconDefinition;
-      rotate?: string;
-    }) => {
-      return (
-        <Box>
-          <Box
-            sx={{
-              display: 'flex',
-              color: '#8f949f',
-              alignItems: 'center',
+  const Information = ({
+    title,
+    value,
+    icon,
+    rotate = '0deg',
+  }: {
+    title: string;
+    value: string;
+    icon: IconDefinition;
+    rotate?: string;
+  }) => {
+    return (
+      <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            color: '#8f949f',
+            alignItems: 'center',
+          }}
+        >
+          <FontAwesomeIcon
+            icon={icon}
+            style={{
+              rotate: rotate,
+              fontWeight: 'bold',
             }}
-          >
-            <FontAwesomeIcon
-              icon={icon}
-              style={{
-                rotate: rotate,
-                fontWeight: 'bold',
-              }}
-            />
-            <Typography variant="h5" component="div" ml={1} fontWeight="bold">
-              {title}
-            </Typography>
-          </Box>
-          <Typography variant="h5" component="div" sx={styles.infoText}>
-            {value}
+          />
+          <Typography variant="h5" component="div" ml={1} fontWeight="bold">
+            {title}
           </Typography>
         </Box>
-      );
-    },
-  );
+        <Typography variant="h5" component="div" sx={styles.infoText}>
+          {value}
+        </Typography>
+      </Box>
+    );
+  };
 
   const { image, name, status, species, gender, location, episode } = character;
 
@@ -103,7 +101,7 @@ const CharacterCard = ({ character }: ICharacterCardProps) => {
               boxShadow:
                 status !== 'unknown'
                   ? `0rem 0rem 0.45rem 0.04rem ${characterStatus[status]}`
-                  : '',
+                  : 'none',
             }}
           />
           <Typography variant="h5" component="div" ml={1}>
