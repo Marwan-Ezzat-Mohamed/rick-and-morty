@@ -1,5 +1,5 @@
 import VirtualGrid from '../../common/VirtualGrid';
-import { CharacterCardProps } from '../CharacterCard/CharacterCard';
+import { ICharacterCardProps } from '../CharacterCard/CharacterCard';
 import CharacterCard from '../CharacterCard';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -11,7 +11,7 @@ import {
 } from '../CharacterCard/styles';
 
 interface ICharactersGrid {
-  gridItems: CharacterCardProps[] | null;
+  gridItems: ICharacterCardProps[] | null;
   loadMoreItems: ({
     startIndex,
     stopIndex,

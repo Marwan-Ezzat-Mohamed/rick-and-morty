@@ -19,11 +19,11 @@ import { Character } from '../../../GraphQL/types';
 import CharacterCardSkeleton from './CharacterCardSkeleton';
 import shallow from 'zustand/shallow';
 
-export interface CharacterCardProps {
+export interface ICharacterCardProps {
   character: Character | null;
 }
 
-const CharacterCard = ({ character }: CharacterCardProps) => {
+const CharacterCard = ({ character }: ICharacterCardProps) => {
   const theme = useTheme();
   const colors = getTokens(theme.palette.mode);
   const characterStatus: Record<string, string> = useMemo(
