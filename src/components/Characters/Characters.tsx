@@ -7,10 +7,10 @@ import shallow from 'zustand/shallow';
 import CharactersGrid from './CharacterGrid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import useDebounce from '../common/useDebounce/useDebounce';
 
 const Characters = () => {
   const nextPage = useRef(1);
-  const currentLoading = useRef<number | null>(null);
 
   const {
     characters,
@@ -41,17 +41,15 @@ const Characters = () => {
 
   const loadCharacters = useCallback(
     async (query: string, override = false) => {
-      if (!nextPage.current || currentLoading.current === nextPage.current)
-        return; // no more pages to load
+      if (!nextPage.current) return; // no more pages to load
 
-      currentLoading.current = nextPage.current;
       const { data, error } = await getCharacters({
         variables: {
           page: nextPage.current,
           name: query,
         },
       });
-      currentLoading.current = null;
+
       if (!error && data) {
         setCharacters(data.characters.results, override);
         setHasNextPage(data.characters.info.next !== null);
@@ -62,11 +60,11 @@ const Characters = () => {
     [getCharacters, setCharacters, setHasNextPage],
   );
 
-  //const searchQueryDebounce = useDebounce(searchQuery, 100);
+  const searchQueryDebounce = useDebounce(searchQuery, 200);
   useEffect(() => {
     nextPage.current = 1; // reset page as we are searching for a new character
-    loadCharacters(searchQuery, true);
-  }, [searchQuery, loadCharacters]);
+    loadCharacters(searchQueryDebounce, true);
+  }, [searchQueryDebounce, loadCharacters]);
 
   const loadMoreItems = useCallback(async () => {
     await loadCharacters(searchQuery);
