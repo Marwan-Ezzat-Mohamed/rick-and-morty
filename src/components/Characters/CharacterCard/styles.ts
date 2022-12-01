@@ -1,9 +1,10 @@
 import { SxProps } from '@mui/material';
-
+export const CHARACTER_CARD_WIDTH = 255;
+export const CHARACTER_CARD_HEIGHT = 495;
 const CharacterStyles: Record<string, SxProps> = {
   card: {
-    width: '255px',
-    height: '495px',
+    width: CHARACTER_CARD_WIDTH + 'px',
+    height: CHARACTER_CARD_HEIGHT + 'px',
     p: 2,
     borderRadius: '20px',
     boxShadow: 6,

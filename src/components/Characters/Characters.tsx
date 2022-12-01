@@ -13,11 +13,19 @@ const Characters = () => {
   const nextPage = useRef(1);
   const currentLoading = useRef<number | null>(null);
 
-  const { characters, setCharacters, searchQuery } = useStore(
+  const {
+    characters,
+    setCharacters,
+    searchQuery,
+    hasNextPage,
+    setHasNextPage,
+  } = useStore(
     state => ({
       characters: state.characters,
       setCharacters: state.setCharacters,
       searchQuery: state.searchQuery,
+      hasNextPage: state.hasNextPage,
+      setHasNextPage: state.setHasNextPage,
     }),
     shallow,
   );
@@ -47,10 +55,12 @@ const Characters = () => {
       currentLoading.current = null;
       if (!error && data) {
         setCharacters(data.characters.results, override);
+        setHasNextPage(data.characters.info.next !== null);
+
         nextPage.current = data.characters.info.next; // update next page
       }
     },
-    [getCharacters, setCharacters, searchQuery],
+    [getCharacters, setCharacters, setHasNextPage, searchQuery],
   );
 
   const searchQueryDebounce = useDebounce(searchQuery, 100);
@@ -93,7 +103,7 @@ const Characters = () => {
       gridItems={
         characters ? characters.map(character => ({ character })) : null
       }
-      hasMore={nextPage.current != null}
+      hasMore={hasNextPage}
     />
   );
 };

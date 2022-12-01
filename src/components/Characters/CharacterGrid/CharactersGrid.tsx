@@ -5,6 +5,10 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import styles from './styles';
 import Typography from '@mui/material/Typography';
+import {
+  CHARACTER_CARD_HEIGHT,
+  CHARACTER_CARD_WIDTH,
+} from '../CharacterCard/styles';
 
 interface ICharactersGrid {
   gridItems: CharacterCardProps[] | null;
@@ -28,8 +32,8 @@ const CharactersGrid = ({
       <VirtualGrid
         items={gridItems}
         ItemCard={CharacterCard}
-        itemHeight={495}
-        itemWidth={255}
+        itemHeight={CHARACTER_CARD_HEIGHT}
+        itemWidth={CHARACTER_CARD_WIDTH}
         gap={25}
         loadMoreItems={loadMoreItems}
         hasMore={hasMore}

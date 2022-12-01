@@ -53,7 +53,7 @@ const VirtualGrid = <ItemType,>({
 
   const isItemLoaded = useCallback(
     ({ index }: { index: number }) => {
-      return !hasMore || !!(items && items[index]);
+      return !!(items && items[index]);
     },
     [hasMore, items],
   );

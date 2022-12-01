@@ -7,6 +7,8 @@ export interface CharactersSlice {
   setSearchQuery: (query: string) => void;
   characters: Character[] | null;
   setCharacters: (characters: Character[], override?: boolean) => void;
+  hasNextPage: boolean;
+  setHasNextPage: (hasNextPage: boolean) => void;
 }
 
 export const createCharactersSlice: StateCreator<
@@ -26,4 +28,6 @@ export const createCharactersSlice: StateCreator<
       set({ characters: [...existingCharacters, ...characters] });
     }
   },
+  hasNextPage: false,
+  setHasNextPage: (hasNextPage: boolean) => set({ hasNextPage }),
 });
