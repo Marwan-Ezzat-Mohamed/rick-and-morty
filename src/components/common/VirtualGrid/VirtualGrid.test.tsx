@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import VirtualGrid from './VirtualGrid';
-import { mockCharacters } from './../../../__mocks__/characters.mock';
 
 const testData = Array.from({ length: 1000 }, (_, i) => ({
   index: i,
