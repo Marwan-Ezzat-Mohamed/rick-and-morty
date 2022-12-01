@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,6 +17,7 @@ import {
 import Box from '@mui/material/Box';
 import { Character } from '../../../GraphQL/types';
 import CharacterCardSkeleton from './CharacterCardSkeleton';
+import shallow from 'zustand/shallow';
 
 export interface CharacterCardProps {
   character: Character | null;
@@ -84,7 +85,7 @@ const CharacterCard = ({ character }: CharacterCardProps) => {
         backgroundColor: colors.primary[400],
         '&:hover': {
           backgroundColor: colors.primary[500],
-          transform: 'scale(1.05)',
+          transform: 'scale(1.04)',
         },
       }}
     >
@@ -132,4 +133,6 @@ const CharacterCard = ({ character }: CharacterCardProps) => {
   );
 };
 
-export default CharacterCard;
+export default memo(CharacterCard, (prevProps, nextProps) => {
+  return shallow(prevProps.character, nextProps.character);
+});
