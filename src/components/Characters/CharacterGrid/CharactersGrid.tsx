@@ -1,4 +1,3 @@
-import React from 'react';
 import VirtualGrid from '../../common/VirtualGrid';
 import { CharacterCardProps } from '../CharacterCard/CharacterCard';
 import CharacterCard from '../CharacterCard';
@@ -8,11 +7,14 @@ import styles from './styles';
 
 interface ICharactersGrid {
   gridItems: CharacterCardProps[] | null;
-  isItemLoaded: (index: number) => boolean;
-  loadMoreItems: (
-    startIndex: number,
-    stopIndex: number,
-  ) => Promise<void> | void;
+  isItemLoaded: ({ index }: { index: number }) => boolean;
+  loadMoreItems: ({
+    startIndex,
+    stopIndex,
+  }: {
+    startIndex: number;
+    stopIndex: number;
+  }) => Promise<void>;
   hasMore: boolean;
 }
 
@@ -33,6 +35,7 @@ const CharactersGrid = ({
         loadMoreItems={loadMoreItems}
         isItemLoaded={isItemLoaded}
         hasMore={hasMore}
+        numberOfSkeletonsCard={4}
       />
     </Box>
   );

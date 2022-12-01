@@ -60,20 +60,23 @@ const Characters = () => {
   }, [searchQueryDebounce, loadCharacters]);
 
   const isItemLoaded = useCallback(
-    (index: number) => {
-      return !(characters && characters[index] && characters[index].id);
+    ({ index }: { index: number }) => {
+      return !!(characters && characters[index]);
     },
     [characters],
   );
 
   const loadMoreItems = useCallback(
-    async (startIndex: number, stopIndex: number) => {
-      console.log({ startIndex, stopIndex, len: characters?.length });
-      if (!characters) return;
-      if (stopIndex < characters.length - 1 || !nextPage.current) return;
+    async ({
+      startIndex,
+      stopIndex,
+    }: {
+      startIndex: number;
+      stopIndex: number;
+    }) => {
       await loadCharacters(searchQueryDebounce);
     },
-    [characters, loadCharacters, searchQueryDebounce],
+    [loadCharacters, searchQueryDebounce],
   );
 
   if (error)
