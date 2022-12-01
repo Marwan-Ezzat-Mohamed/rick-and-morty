@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 
 interface ICharactersGrid {
   gridItems: CharacterCardProps[] | null;
-  isItemLoaded: ({ index }: { index: number }) => boolean;
   loadMoreItems: ({
     startIndex,
     stopIndex,
@@ -20,7 +19,6 @@ interface ICharactersGrid {
 }
 
 const CharactersGrid = ({
-  isItemLoaded,
   loadMoreItems,
   gridItems,
   hasMore,
@@ -34,7 +32,6 @@ const CharactersGrid = ({
         itemWidth={255}
         gap={25}
         loadMoreItems={loadMoreItems}
-        isItemLoaded={isItemLoaded}
         hasMore={hasMore}
         numberOfSkeletonsCard={4}
         LoadingComponent={<LinearProgress color="inherit" />}

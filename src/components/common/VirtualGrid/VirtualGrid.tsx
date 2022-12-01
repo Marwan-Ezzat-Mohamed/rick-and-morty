@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useCallback } from 'react';
 import {
   List as _List,
   ListProps,
@@ -19,7 +19,6 @@ interface VirtualGridProps<ItemType> {
   items: ItemType[] | null;
   ItemCard: React.FC<ItemType>;
   renderItem?: null | ((item: ItemType) => React.ReactNode);
-  isItemLoaded: (index: Index) => boolean;
   loadMoreItems: (index: IndexRange) => Promise<void>;
   itemHeight: number;
   itemWidth: number;
@@ -41,7 +40,7 @@ const VirtualGrid = <ItemType,>({
   gap = 0,
   className,
   style,
-  isItemLoaded,
+
   loadMoreItems,
   hasMore,
   numberOfSkeletonsCard = 1,
@@ -52,6 +51,13 @@ const VirtualGrid = <ItemType,>({
   const itemsPerRow = useRef(0);
   const totalNumberOfItems =
     (items?.length ?? 0) + (hasMore ? numberOfSkeletonsCard : 0);
+
+  const isItemLoaded = useCallback(
+    ({ index }: { index: number }) => {
+      return !hasMore || !!(items && items[index]);
+    },
+    [hasMore, items],
+  );
 
   const rowRenderer = ({ index, key, style }: any) => {
     const itemsToRenderPerRow = [];

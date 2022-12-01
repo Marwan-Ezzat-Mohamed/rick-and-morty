@@ -59,13 +59,6 @@ const Characters = () => {
     loadCharacters(searchQueryDebounce, true);
   }, [searchQueryDebounce, loadCharacters]);
 
-  const isItemLoaded = useCallback(
-    ({ index }: { index: number }) => {
-      return !!(characters && characters[index]);
-    },
-    [characters],
-  );
-
   const loadMoreItems = useCallback(
     async ({
       startIndex,
@@ -96,7 +89,6 @@ const Characters = () => {
 
   return (
     <CharactersGrid
-      isItemLoaded={isItemLoaded}
       loadMoreItems={loadMoreItems}
       gridItems={
         characters ? characters.map(character => ({ character })) : null

@@ -25,7 +25,6 @@ Primary.args = {
   gridItems: mockCharacters.characters.results.map(character => ({
     character,
   })),
-  isItemLoaded: ({ index }: { index: number }) => true,
   loadMoreItems: ({
     startIndex,
     stopIndex,
@@ -45,7 +44,6 @@ Primary.args = {
 export const NoResults = Template.bind({});
 NoResults.args = {
   gridItems: [],
-  isItemLoaded: ({ index }: { index: number }) => true,
   loadMoreItems: ({
     startIndex,
     stopIndex,
@@ -64,7 +62,6 @@ NoResults.args = {
 export const Loading = Template.bind({});
 Loading.args = {
   gridItems: null,
-  isItemLoaded: ({ index }: { index: number }) => true,
   loadMoreItems: ({
     startIndex,
     stopIndex,

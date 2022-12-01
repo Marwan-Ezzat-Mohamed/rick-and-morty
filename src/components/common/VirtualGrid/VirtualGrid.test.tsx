@@ -21,7 +21,6 @@ describe('VirtualGrid', () => {
         itemWidth={255}
         gap={25}
         loadMoreItems={loadMoreItems}
-        isItemLoaded={isItemLoaded}
         hasMore={false}
       />,
     );
@@ -40,7 +39,6 @@ describe('VirtualGrid', () => {
         itemWidth={255}
         gap={25}
         loadMoreItems={loadMoreItems}
-        isItemLoaded={isItemLoaded}
         hasMore={false}
       />,
     );
@@ -59,7 +57,6 @@ describe('VirtualGrid', () => {
         itemWidth={255}
         gap={25}
         loadMoreItems={loadMoreItems}
-        isItemLoaded={isItemLoaded}
         hasMore={false}
       />,
     );
