@@ -1,5 +1,5 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useMode, ColorModeContext, themeSettings } from '../src/theme';
+import { useMode, ColorModeContext, themeSettings } from '../src/Theme/theme';
 import MyCssBaseLine from '../src/MyCssBaseLine';
 import { useMemo } from 'react';
 import { createTheme } from '@mui/material/styles';
