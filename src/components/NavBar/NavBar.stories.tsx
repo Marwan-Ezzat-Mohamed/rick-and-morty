@@ -4,7 +4,7 @@ import NavBar from '.';
 import { Box } from '@mui/material';
 
 export default {
-  title: 'NavBar',
+  title: 'Components/NavBar',
   component: NavBar,
 } as ComponentMeta<typeof NavBar>;
 
