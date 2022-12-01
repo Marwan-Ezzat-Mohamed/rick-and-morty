@@ -120,13 +120,17 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <h1>
+      <h1
+        style="text-align: center;"
+      >
         No results found
       </h1>
     </div>
   </body>,
   "container": <div>
-    <h1>
+    <h1
+      style="text-align: center;"
+    >
       No results found
     </h1>
   </div>,

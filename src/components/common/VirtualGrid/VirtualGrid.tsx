@@ -7,7 +7,6 @@ import {
   AutoSizer as _AutoSizer,
   AutoSizerProps,
   IndexRange,
-  Index,
 } from 'react-virtualized';
 
 const List = _List as unknown as React.FC<ListProps>;
@@ -100,8 +99,6 @@ const VirtualGrid = <ItemType,>({
     );
   };
 
-  const memoizedValue = useMemo(() => rowRenderer, [items]);
-
   if (!items) {
     if (LoadingComponent) return LoadingComponent;
     return <h1>Loading...</h1>;
@@ -141,7 +138,7 @@ const VirtualGrid = <ItemType,>({
                   height={height}
                   width={width}
                   rowHeight={itemHeight + gap}
-                  rowRenderer={memoizedValue}
+                  rowRenderer={rowRenderer}
                   rowCount={Math.ceil(totalNumberOfItems / itemsPerRow.current)}
                   ref={registerChild}
                   itemData={items}

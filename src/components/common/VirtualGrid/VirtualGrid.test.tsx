@@ -11,7 +11,6 @@ const TestItem = ({ index }: { index: number }) => {
 
 describe('VirtualGrid', () => {
   it('matches snapshot with data', () => {
-    const isItemLoaded = jest.fn();
     const loadMoreItems = jest.fn();
     const rendered = render(
       <VirtualGrid
@@ -29,7 +28,6 @@ describe('VirtualGrid', () => {
   });
 
   it('matches snapshot with no data', () => {
-    const isItemLoaded = jest.fn();
     const loadMoreItems = jest.fn();
     const rendered = render(
       <VirtualGrid
@@ -47,7 +45,6 @@ describe('VirtualGrid', () => {
   });
 
   it('matches snapshot with null data', () => {
-    const isItemLoaded = jest.fn();
     const loadMoreItems = jest.fn();
     const rendered = render(
       <VirtualGrid

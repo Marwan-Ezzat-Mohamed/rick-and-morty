@@ -1,7 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import VirtualGrid from '.';
-
 import { Box } from '@mui/material';
 
 export default {
@@ -20,7 +18,6 @@ const gridProps = {
     startIndex: number;
     stopIndex: number;
   }) => {
-    //return void  promise
     return new Promise<void>(resolve => {
       setTimeout(() => {
         resolve();
