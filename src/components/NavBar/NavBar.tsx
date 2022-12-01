@@ -36,7 +36,7 @@ const NavBar = () => {
       >
         <InputBase
           sx={styles.searchInput}
-          placeholder="Search"
+          placeholder="Search for characters"
           value={searchQuery}
           onChange={handleSearch}
         />
