@@ -13,11 +13,22 @@ const gridProps = {
   itemHeight: 100,
   itemWidth: 100,
   gap: 1,
-  loadMoreItems: () => {
-    console.log('load more items');
+  loadMoreItems: ({
+    startIndex,
+    stopIndex,
+  }: {
+    startIndex: number;
+    stopIndex: number;
+  }) => {
+    //return void  promise
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
   },
-  isItemLoaded: (index: number) => true,
-  hasMore: true,
+  isItemLoaded: ({ index }: { index: number }) => true,
+  hasMore: false,
 };
 
 const Card = ({ index }: { index: number }) => {

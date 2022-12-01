@@ -1,133 +1,138 @@
-import React, { useRef, useCallback } from 'react';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import InfiniteLoader from 'react-window-infinite-loader';
-import LinearProgress from '@mui/material/LinearProgress';
+import { useRef, useMemo } from 'react';
 import {
-  FixedSizeGrid as Grid,
-  GridChildComponentProps,
-  areEqual,
-} from 'react-window';
-import Typography from '@mui/material/Typography';
-import './styles.css';
+  List as _List,
+  ListProps,
+  InfiniteLoaderProps,
+  InfiniteLoader as _InfiniteLoader,
+  AutoSizer as _AutoSizer,
+  AutoSizerProps,
+  IndexRange,
+  Index,
+} from 'react-virtualized';
 
-type ItemCardGridProps<Item> = {
-  items: Item[] | null;
-  ItemCard: React.FC<Item>;
+const List = _List as unknown as React.FC<ListProps>;
+const InfiniteLoader =
+  _InfiniteLoader as unknown as React.FC<InfiniteLoaderProps>;
+const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
+
+interface VirtualGridProps<ItemType> {
+  items: ItemType[] | null;
+  ItemCard: React.FC<ItemType>;
+  renderItem?: null | ((item: ItemType) => React.ReactNode);
+  isItemLoaded: (index: Index) => boolean;
+  loadMoreItems: (index: IndexRange) => Promise<void>;
   itemHeight: number;
   itemWidth: number;
+  className?: string;
+  style?: React.CSSProperties;
   gap?: number;
-  loadMoreItems: (
-    startIndex: number,
-    stopIndex: number,
-  ) => Promise<void> | void;
-  isItemLoaded: (index: number) => boolean;
   hasMore: boolean;
-  numberOfSkeletonsRows?: number;
-};
+  numberOfSkeletonsCard?: number;
+  LoadingComponent?: React.FC | null;
+  NoResultsComponent?: React.FC | null;
+}
 
-const VirtualGrid = <Item,>({
+const VirtualGrid = <ItemType,>({
   items,
+  renderItem = null,
   ItemCard,
   itemHeight,
   itemWidth,
-  loadMoreItems,
-  isItemLoaded,
-  hasMore,
   gap = 0,
-  numberOfSkeletonsRows = 1,
-}: ItemCardGridProps<Item>): JSX.Element => {
-  const numberOfColumns = useRef(0);
-  const getIdByGridPosition = useCallback(
-    (col: number, row: number) => row * numberOfColumns.current + col,
-    [],
-  );
+  className,
+  style,
+  isItemLoaded,
+  loadMoreItems,
+  hasMore,
+  numberOfSkeletonsCard = 1,
+  LoadingComponent = null,
+  NoResultsComponent = null,
+  ...rest
+}: VirtualGridProps<ItemType>) => {
+  const itemsPerRow = useRef(0);
+  const totalNumberOfItems =
+    (items?.length ?? 0) + (hasMore ? numberOfSkeletonsCard : 0);
 
-  if (!items) return <LinearProgress color="inherit" />;
-
-  if (items.length === 0) {
-    return (
-      <Typography align="center" variant="h1">
-        No results found
-      </Typography>
+  const rowRenderer = ({ index, key, style }: any) => {
+    const itemsToRenderPerRow = [];
+    const fromIndex = index * itemsPerRow.current;
+    const toIndex = Math.min(
+      fromIndex + itemsPerRow.current,
+      totalNumberOfItems,
     );
+
+    for (let i = fromIndex; i < toIndex; i++) {
+      itemsToRenderPerRow.push(
+        <div
+          style={{
+            width: itemWidth + gap + 'px',
+            height: itemHeight + gap + 'px',
+          }}
+          key={key + i}
+        >
+          {renderItem ? (
+            renderItem(items![i])
+          ) : (
+            <ItemCard {...items![i]} style={{}} />
+          )}
+        </div>,
+      );
+    }
+
+    return (
+      <div
+        key={key}
+        style={{
+          ...style,
+          display: 'flex',
+          justifyContent: 'center',
+          top: style.top + 10,
+        }}
+      >
+        {itemsToRenderPerRow}
+      </div>
+    );
+  };
+
+  const memoizedValue = useMemo(() => rowRenderer, [items]);
+
+  if (!items) {
+    if (LoadingComponent) return <LoadingComponent />;
+    return <h1>Loading...</h1>;
   }
 
-  const Cell = React.memo(
-    ({
-      columnIndex,
-      rowIndex,
-      style,
-    }: GridChildComponentProps): JSX.Element | null => {
-      const index = getIdByGridPosition(columnIndex, rowIndex);
-      if (!hasMore && index >= items.length) return null;
-      return (
-        <div style={style}>
-          <ItemCard {...items[index]} style={{}} />
-        </div>
-      );
-    },
-    areEqual,
-  );
+  if (items.length === 0) {
+    if (NoResultsComponent) return <NoResultsComponent />;
+    return <h1>No results found</h1>;
+  }
 
   return (
     <AutoSizer>
       {({ height, width }) => {
-        const totalNumberOfCards = (items?.length ?? 0) + (hasMore ? 1 : 0);
-        numberOfColumns.current = Math.max(
-          Math.floor(width / (itemWidth + gap)),
-          1,
-        );
-        const numberOfRows =
-          Math.ceil(totalNumberOfCards / numberOfColumns.current) +
-          (hasMore ? numberOfSkeletonsRows : 0);
-
+        itemsPerRow.current = Math.floor(width / (itemWidth + gap));
         return (
           <InfiniteLoader
-            isItemLoaded={isItemLoaded}
-            itemCount={totalNumberOfCards}
-            loadMoreItems={loadMoreItems}
+            isRowLoaded={({ index }) =>
+              isItemLoaded({ index: index * itemsPerRow.current })
+            }
+            rowCount={totalNumberOfItems}
+            loadMoreRows={loadMoreItems}
+            threshold={1}
           >
-            {({ onItemsRendered, ref }) => {
+            {({ registerChild, onRowsRendered }) => {
               return (
-                <Grid
-                  columnCount={Math.min(
-                    numberOfColumns.current,
-                    totalNumberOfCards,
-                  )}
-                  columnWidth={itemWidth + gap}
+                <List
+                  className={className + ' virtual-grid'}
+                  style={style}
                   height={height}
-                  rowCount={numberOfRows}
-                  rowHeight={itemHeight + gap}
-                  ref={ref}
                   width={width}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    paddingTop: gap + 'px',
-                  }}
-                  className="virtual-grid"
-                  onItemsRendered={({
-                    visibleRowStartIndex,
-                    visibleColumnStartIndex,
-                    visibleRowStopIndex,
-                    overscanRowStopIndex,
-                    overscanRowStartIndex,
-                  }) => {
-                    onItemsRendered({
-                      overscanStartIndex:
-                        overscanRowStartIndex * numberOfColumns.current,
-                      overscanStopIndex:
-                        overscanRowStopIndex * numberOfColumns.current,
-                      visibleStartIndex:
-                        visibleRowStartIndex * numberOfColumns.current,
-                      visibleStopIndex:
-                        visibleRowStopIndex * numberOfColumns.current,
-                    });
-                  }}
-                >
-                  {Cell}
-                </Grid>
+                  rowHeight={itemHeight + gap}
+                  rowRenderer={memoizedValue}
+                  rowCount={Math.ceil(totalNumberOfItems / itemsPerRow.current)}
+                  ref={registerChild}
+                  itemData={items}
+                  onRowsRendered={onRowsRendered}
+                />
               );
             }}
           </InfiniteLoader>
