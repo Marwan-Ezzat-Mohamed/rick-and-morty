@@ -2,8 +2,9 @@ import VirtualGrid from '../../common/VirtualGrid';
 import { CharacterCardProps } from '../CharacterCard/CharacterCard';
 import CharacterCard from '../CharacterCard';
 import Box from '@mui/material/Box';
-
+import LinearProgress from '@mui/material/LinearProgress';
 import styles from './styles';
+import Typography from '@mui/material/Typography';
 
 interface ICharactersGrid {
   gridItems: CharacterCardProps[] | null;
@@ -36,6 +37,12 @@ const CharactersGrid = ({
         isItemLoaded={isItemLoaded}
         hasMore={hasMore}
         numberOfSkeletonsCard={4}
+        LoadingComponent={<LinearProgress color="inherit" />}
+        NoResultsComponent={
+          <Typography variant="h1" align="center">
+            No Characters found
+          </Typography>
+        }
       />
     </Box>
   );

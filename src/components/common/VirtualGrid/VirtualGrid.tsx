@@ -28,8 +28,8 @@ interface VirtualGridProps<ItemType> {
   gap?: number;
   hasMore: boolean;
   numberOfSkeletonsCard?: number;
-  LoadingComponent?: React.FC | null;
-  NoResultsComponent?: React.FC | null;
+  LoadingComponent?: JSX.Element | null;
+  NoResultsComponent?: JSX.Element | null;
 }
 
 const VirtualGrid = <ItemType,>({
@@ -97,13 +97,21 @@ const VirtualGrid = <ItemType,>({
   const memoizedValue = useMemo(() => rowRenderer, [items]);
 
   if (!items) {
-    if (LoadingComponent) return <LoadingComponent />;
+    if (LoadingComponent) return LoadingComponent;
     return <h1>Loading...</h1>;
   }
 
   if (items.length === 0) {
-    if (NoResultsComponent) return <NoResultsComponent />;
-    return <h1>No results found</h1>;
+    if (NoResultsComponent) return NoResultsComponent;
+    return (
+      <h1
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        No results found
+      </h1>
+    );
   }
 
   return (
