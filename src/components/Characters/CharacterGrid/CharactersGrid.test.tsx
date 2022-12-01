@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import CharacterGrid from './CharactersGrid';
 import { mockCharacters } from './../../../__mocks__/characters.mock';
 
@@ -7,27 +7,29 @@ const characters = mockCharacters.characters.results.map(character => ({
   character,
 }));
 
-Object.defineProperties(window.HTMLElement.prototype, {
-  offsetLeft: {
-    get: function () {
-      return parseFloat(window.getComputedStyle(this).marginLeft) || 0;
+beforeEach(() => {
+  Object.defineProperties(window.HTMLElement.prototype, {
+    offsetLeft: {
+      get: function () {
+        return parseFloat(window.getComputedStyle(this).marginLeft) || 0;
+      },
     },
-  },
-  offsetTop: {
-    get: function () {
-      return parseFloat(window.getComputedStyle(this).marginTop) || 0;
+    offsetTop: {
+      get: function () {
+        return parseFloat(window.getComputedStyle(this).marginTop) || 0;
+      },
     },
-  },
-  offsetHeight: {
-    get: function () {
-      return parseFloat(window.getComputedStyle(this).height) || 1080;
+    offsetHeight: {
+      get: function () {
+        return parseFloat(window.getComputedStyle(this).height) || 1080;
+      },
     },
-  },
-  offsetWidth: {
-    get: function () {
-      return parseFloat(window.getComputedStyle(this).width) || 1920;
+    offsetWidth: {
+      get: function () {
+        return parseFloat(window.getComputedStyle(this).width) || 1920;
+      },
     },
-  },
+  });
 });
 
 describe('CharacterGrid', () => {
@@ -70,18 +72,23 @@ describe('CharacterGrid', () => {
     expect(rendered).toMatchSnapshot();
   });
 
-  it('calls loadMoreItems when user scrolls', () => {
+  it('calls loadMoreItems when user scrolls', async () => {
     const loadMoreItems = jest.fn();
     const rendered = render(
       <CharacterGrid
         gridItems={characters}
         loadMoreItems={loadMoreItems}
-        hasMore={false}
+        hasMore={true}
       />,
     );
 
-    const grid = rendered.container.querySelector('.virtual-grid>div');
-    grid!.dispatchEvent(new Event('scroll'));
-    expect(loadMoreItems).toHaveBeenCalled();
+    const grid = rendered.container.querySelector('.virtual-grid');
+
+    act(() => {
+      /* fire events that update state */
+      grid!.scrollTop = 10000;
+      grid!.dispatchEvent(new Event('scroll'));
+    });
+    await waitFor(() => expect(loadMoreItems).toHaveBeenCalled());
   });
 });

@@ -33,7 +33,7 @@ const Characters = () => {
   );
 
   const loadCharacters = useCallback(
-    async (query: string, override = false) => {
+    async (override = false) => {
       if (!nextPage.current || currentLoading.current === nextPage.current)
         return; // no more pages to load
 
@@ -41,7 +41,7 @@ const Characters = () => {
       const { data, error } = await getCharacters({
         variables: {
           page: nextPage.current,
-          name: query,
+          name: searchQuery,
         },
       });
       currentLoading.current = null;
@@ -50,13 +50,13 @@ const Characters = () => {
         nextPage.current = data.characters.info.next; // update next page
       }
     },
-    [getCharacters, setCharacters],
+    [getCharacters, setCharacters, searchQuery],
   );
 
   const searchQueryDebounce = useDebounce(searchQuery, 100);
   useEffect(() => {
     nextPage.current = 1; // reset page as we are searching for a new character
-    loadCharacters(searchQueryDebounce, true);
+    loadCharacters(true);
   }, [searchQueryDebounce, loadCharacters]);
 
   const loadMoreItems = useCallback(
@@ -67,9 +67,9 @@ const Characters = () => {
       startIndex: number;
       stopIndex: number;
     }) => {
-      await loadCharacters(searchQueryDebounce);
+      await loadCharacters();
     },
-    [loadCharacters, searchQueryDebounce],
+    [loadCharacters],
   );
 
   if (error)
@@ -78,7 +78,7 @@ const Characters = () => {
         Error loading characters
         <Button
           variant="contained"
-          onClick={() => loadCharacters(searchQueryDebounce)}
+          onClick={() => loadCharacters()}
           color="warning"
           sx={{ mx: 2 }}
         >
