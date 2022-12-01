@@ -1,13 +1,13 @@
 import { ThemeProvider, CssBaseline, Box } from '@mui/material';
 import NavBar from './components/NavBar';
-import { ColorModeContext, useMode } from './theme';
+import { ColorModeContext, useMode } from './Theme/theme';
 import Characters from './components/Characters';
 import MyCssBaseLine from './MyCssBaseLine';
 
 const App = (): JSX.Element => {
-  const [theme, colorMode] = useMode();
+  const [theme, toggleTheme] = useMode();
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext.Provider value={toggleTheme}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <MyCssBaseLine />
@@ -19,9 +19,7 @@ const App = (): JSX.Element => {
           }}
         >
           <NavBar />
-
           <Characters />
-          {/* <Tat /> */}
         </Box>
       </ThemeProvider>
     </ColorModeContext.Provider>

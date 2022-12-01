@@ -4,13 +4,13 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from './../../../theme';
+import { getTokens } from '../../../Theme/theme';
 import styles from './styles';
 import { memo } from 'react';
 
 const CharacterCardSkeleton = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = getTokens(theme.palette.mode);
 
   const Information = () => {
     return (

@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import styles from './styles';
-import { tokens } from './../../../theme';
+import { getTokens } from '../../../Theme/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faDna,
@@ -25,7 +25,7 @@ export interface CharacterCardProps {
 
 const CharacterCard = ({ character }: CharacterCardProps) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = getTokens(theme.palette.mode);
   const characterStatus: Record<string, string> = useMemo(
     () => ({
       Alive: colors.greenAccent[500],
