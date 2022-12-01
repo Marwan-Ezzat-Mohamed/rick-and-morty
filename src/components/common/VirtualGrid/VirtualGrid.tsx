@@ -117,7 +117,10 @@ const VirtualGrid = <ItemType,>({
   return (
     <AutoSizer>
       {({ height, width }) => {
-        itemsPerRow.current = Math.floor(width / (itemWidth + gap));
+        itemsPerRow.current = Math.max(
+          Math.floor(width / (itemWidth + gap)),
+          1,
+        );
         return (
           <InfiniteLoader
             isRowLoaded={({ index }) =>
