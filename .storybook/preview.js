@@ -1,8 +1,8 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useMode, ColorModeContext, themeSettings } from '../src/Theme/theme';
-import MyCssBaseLine from '../src/MyCssBaseLine';
 import { useMemo } from 'react';
 import { createTheme } from '@mui/material/styles';
+import '../src/index.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -49,7 +49,6 @@ export const withMuiTheme = (Story, context) => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <MyCssBaseLine />
         <Story />
       </ThemeProvider>
     </ColorModeContext.Provider>
