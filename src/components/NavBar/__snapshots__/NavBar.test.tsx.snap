@@ -16,7 +16,7 @@ Object {
           >
             <input
               class="MuiInputBase-input css-yz9k0d-MuiInputBase-input"
-              placeholder="Search"
+              placeholder="Search for characters"
               type="text"
               value=""
             />
@@ -81,7 +81,7 @@ Object {
         >
           <input
             class="MuiInputBase-input css-yz9k0d-MuiInputBase-input"
-            placeholder="Search"
+            placeholder="Search for characters"
             type="text"
             value=""
           />
