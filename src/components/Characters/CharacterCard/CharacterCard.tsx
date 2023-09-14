@@ -81,9 +81,11 @@ const CharacterCard = ({ character }: ICharacterCardProps) => {
       sx={{
         ...styles.card,
         backgroundColor: colors.primary[400],
+        transition: "all 500ms",
         '&:hover': {
           backgroundColor: colors.primary[500],
           transform: 'scale(1.04)',
+         
         },
       }}
     >
